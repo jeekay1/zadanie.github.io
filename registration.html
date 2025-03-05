@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация и вход</title>
+    <link rel="stylesheet" href="styles_registration.css">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="background"></div> <!-- Фоновый рисунок -->
+    <div class="container" id="container">
+        <!-- Форма регистрации (скрыта по умолчанию) -->
+        <div id="registerForm" style="display: none;">
+            <h1><i class="fas fa-user-plus"></i> Регистрация</h1>
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="regLogin"><i class="fas fa-user"></i> Логин:</label>
+                    <input type="text" id="regLogin" name="regLogin" pattern="[A-Za-z0-9_-]+" title="Латинские буквы, цифры, тире и подчеркивания" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword"><i class="fas fa-lock"></i> Пароль:</label>
+                    <input type="password" id="regPassword" name="regPassword" minlength="6" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="saveData" name="saveData">
+                        Сохранить данные
+                    </label>
+                </div>
+                <button type="submit"><i class="fas fa-check"></i> Зарегистрироваться</button>
+            </form>
+            <p>Уже зарегистрированы? <a href="#" id="showLoginForm">Войти</a></p>
+        </div>
+
+        <!-- Форма входа (отображается по умолчанию) -->
+        <div id="loginForm">
+            <h1><i class="fas fa-sign-in-alt"></i> Вход</h1>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="login"><i class="fas fa-user"></i> Логин:</label>
+                    <input type="text" id="login" name="login" required>
+                </div>
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Пароль:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="autoLogin" name="autoLogin">
+                        Автоматически авторизоваться
+                    </label>
+                </div>
+                <button type="submit"><i class="fas fa-check"></i> Войти</button>
+            </form>
+            <p>Нет аккаунта? <a href="#" id="showRegisterForm">Зарегистрироваться</a></p>
+        </div>
+    </div>
+
+    <!-- Страница с сообщениями -->
+    <div id="messagesPage" style="display: none;">
+        <h1><i class="fas fa-comments"></i> Сообщения</h1>
+        <p>Добро пожаловать, <span id="username"></span>!</p>
+        <button id="OKButton"> OK</button>
+    </div>
+
+    <script>
+        // Локальное хранилище для пользователей
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+
+        // Переключение между формами
+        document.getElementById('showLoginForm').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        });
+
+        document.getElementById('showRegisterForm').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+        });
+
+        // Регистрация
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const login = document.getElementById('regLogin').value;
+            const password = document.getElementById('regPassword').value;
+
+            // Проверка, существует ли пользователь
+            if (users.some(user => user.login === login)) {
+                alert('Пользователь с таким логином уже существует.');
+                return;
+            }
+
+            // Добавление нового пользователя
+            users.push({ login, password });
+            localStorage.setItem('users', JSON.stringify(users));
+            alert('Регистрация успешна!');
+            document.getElementById('regLogin').value = '';
+            document.getElementById('regPassword').value = '';
+        });
+
+        // Вход
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const login = document.getElementById('login').value;
+            const password = document.getElementById('password').value;
+
+            // Поиск пользователя
+            const user = users.find(user => user.login === login && user.password === password);
+            if (user) {
+                document.getElementById('container').style.display = 'none';
+                document.getElementById('messagesPage').style.display = 'block';
+                document.getElementById('username').textContent = login;
+            } else {
+                alert('Неверный логин или пароль.');
+            }
+        });
+
+        // OK
+        document.getElementById('OKButton').addEventListener('click', function() {
+            // Перенаправление на main-page.html
+            window.location.href = 'main-page.html';
+        });
+    </script>
+</body>
+</html>

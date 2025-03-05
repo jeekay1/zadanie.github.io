@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея конференций</title>
+    <link rel="stylesheet" href="styles_photo.css">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="background"></div> <!-- Фоновый рисунок -->
+    <div class="container">
+        <h1><i class="fas fa-images"></i> Галерея конференций</h1>
+        <div class="img-container">
+            <div class="img">
+                <img src="photo/5.jpg" alt="Фото 1">
+            </div>
+            <div class="img">
+                <img src="photo/2.jpg" alt="Фото 2">
+            </div>
+            <div class="img">
+                <img src="photo/4.jpg" alt="Фото 3">
+            </div>
+            <div class="img">
+                <img src="photo/3.jpg" alt="Фото 4">
+            </div>
+            <div class="img">
+                <img src="photo/1.jpg" alt="Фото 5">
+            </div>
+ 	<div class="img">
+                <img src="photo/6.jpg" alt="Фото 6">
+            </div>
+        </div>
+        <div class="text">
+            <p><a href="main-page.html"><i class="fas fa-arrow-left"></i> Назад</a></p>
+        </div>
+        <div class="pop-up">
+            <span>&times;</span>
+            <img src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        // Открытие изображения в pop-up
+        document.querySelectorAll('.img img').forEach(image => {
+            image.addEventListener('click', () => {
+                document.querySelector('.pop-up img').src = image.src;
+                document.querySelector('.pop-up').style.display = 'block';
+            });
+        });
+
+        // Закрытие pop-up
+        document.querySelector('.pop-up span').addEventListener('click', () => {
+            document.querySelector('.pop-up').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

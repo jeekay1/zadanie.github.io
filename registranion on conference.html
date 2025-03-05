@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация на конференцию</title>
+    <link rel="stylesheet" href="styles_registranion on conference.css">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="background"></div> <!-- Фоновый рисунок -->
+    <div class="container">
+        <h1>Регистрация участников конференции</h1>
+        <form id="registrationForm">
+            <!-- Фамилия -->
+            <div class="form-group">
+                <label for="lastName"><i class="fas fa-user"></i> Фамилия:</label>
+                <input type="text" id="lastName" name="lastName" pattern="[А-Яа-яЁё]+" title="Только русские буквы" required>
+            </div>
+
+            <!-- Имя -->
+            <div class="form-group">
+                <label for="firstName"><i class="fas fa-user"></i> Имя:</label>
+                <input type="text" id="firstName" name="firstName" pattern="[А-Яа-яЁё]+" title="Только русские буквы" required>
+            </div>
+
+            <!-- Отчество -->
+            <div class="form-group">
+                <label for="middleName"><i class="fas fa-user"></i> Отчество:</label>
+                <input type="text" id="middleName" name="middleName" pattern="[А-Яа-яЁё]+" title="Только русские буквы">
+            </div>
+
+            <!-- Телефон -->
+            <div class="form-group">
+                <label for="phone"><i class="fas fa-phone"></i> Контактный телефон:</label>
+                <input type="tel" id="phone" name="phone" pattern="\+7\d{10}" title="Формат: +7XXXXXXXXXX (11 цифр)" required>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Адрес электронной почты:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <!-- Секция конференции -->
+            <div class="form-group">
+                <label for="section"><i class="fas fa-list"></i> Секция конференции:</label>
+                <select id="section" name="section" required>
+                    <option value="" disabled selected>Выберите секцию</option>
+                    <option value="mathematics">Математика</option>
+                    <option value="physics">Физика</option>
+                    <option value="informatics">Информатика</option>
+                </select>
+            </div>
+
+            <!-- Дата рождения -->
+            <div class="form-group">
+                <label for="birthdate"><i class="fas fa-calendar"></i> Дата рождения:</label>
+                <input type="date" id="birthdate" name="birthdate">
+            </div>
+
+            <!-- Доклад -->
+            <div class="form-group">
+                <label><i class="fas fa-microphone"></i> Будет ли доклад?</label>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" id="reportYes" name="report" value="yes">
+                        Да
+                    </label>
+                    <label>
+                        <input type="radio" id="reportNo" name="report" value="no" checked>
+                        Нет
+                    </label>
+                </div>
+            </div>
+
+            <!-- Тема доклада -->
+            <div class="form-group" id="topicField" style="display: none;">
+                <label for="topic"><i class="fas fa-pencil-alt"></i> Тема доклада:</label>
+                <input type="text" id="topic" name="topic">
+            </div>
+
+            <!-- Кнопка отправки -->
+            <button type="submit"><i class="fas fa-user-plus"></i> Зарегистрироваться</button>
+        </form>
+    </div>
+
+    <script>
+        // Показ/скрытие поля темы доклада
+        document.getElementById('reportYes').addEventListener('change', function() {
+            document.getElementById('topicField').style.display = this.checked ? 'block' : 'none';
+        });
+        document.getElementById('reportNo').addEventListener('change', function() {
+            document.getElementById('topicField').style.display = this.checked ? 'none' : 'block';
+        });
+
+        // Валидация формы
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            const lastName = document.getElementById('lastName').value;
+            const firstName = document.getElementById('firstName').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const section = document.getElementById('section').value;
+            const reportYes = document.getElementById('reportYes').checked;
+            const topic = document.getElementById('topic').value;
+
+            // Проверка фамилии
+            if (!/^[А-Яа-яЁё]+$/.test(lastName)) {
+                alert('Фамилия должна содержать только русские буквы.');
+                event.preventDefault();
+                return;
+            }
+
+            // Проверка имени
+            if (!/^[А-Яа-яЁё]+$/.test(firstName)) {
+                alert('Имя должно содержать только русские буквы.');
+                event.preventDefault();
+                return;
+            }
+
+            // Проверка телефона
+            if (!/^\+7\d{10}$/.test(phone)) {
+                alert('Телефон должен быть в формате +7XXXXXXXXXX (11 цифр).');
+                event.preventDefault();
+                return;
+            }
+
+            // Проверка email
+            if (!/\S+@\S+\.\S+/.test(email)) {
+                alert('Введите корректный адрес электронной почты.');
+                event.preventDefault();
+                return;
+            }
+
+            // Проверка секции
+            if (!section) {
+                alert('Выберите секцию конференции.');
+                event.preventDefault();
+                return;
+            }
+
+            // Проверка темы доклада
+            if (reportYes && !topic) {
+                alert('Введите тему доклада.');
+                event.preventDefault();
+                return;
+            }
+        });
+    </script>
+</body>
+</html>
